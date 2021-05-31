@@ -54,7 +54,7 @@ function App() {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar} color="default">
         <Typography variant="h3" className={classes.header}>
-          Web Postman
+          Web Requests
         </Typography>
       </AppBar>
       <Grid container direction="row" alignItems="center" justify="space-between">
