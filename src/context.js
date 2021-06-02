@@ -15,8 +15,8 @@ const AppProvider = ({ children }) => {
   const [url, setUrl] = useState("");
   const [headersKey, setHeadersKey] = useState("");
   const [headersValue, setHeadersValue] = useState("");
-  const [paramsKey, setParamsKey] = useState("key");
-  const [paramsValue, setParamsValue] = useState("value");
+  const [paramsKey, setParamsKey] = useState("");
+  const [paramsValue, setParamsValue] = useState("");
   const [label, setLabel] = useState(bodyLabels[0]);
   const [isRaw, setIsRaw] = useState(false);
   const [language, setLanguage] = useState("");
@@ -32,8 +32,8 @@ const AppProvider = ({ children }) => {
         params: params.key ? null : params,
         headers,
       });
-      const data = await res.data;
-      setResponse(data);
+      // const data = await res.data;
+      setResponse(res);
     } catch (err) {
       setResponse(err);
     }

@@ -8,14 +8,13 @@ const Params = () => {
   const handleChange = (e) => {
     const node = e.target;
     if (node.name === "key") {
-      setParamsKey(node.value);
+      node.value ? setParamsKey('key') : setParamsKey(node.value);
     } else if (node.name === "value") {
-      setParamsValue(node.value);
+      node.value ? setParamsValue('value') : setParamsValue(node.value);
     }
   };
   useEffect(() => {
-    const paramsL = JSON.parse(`{"${paramsKey}":"${paramsValue}"}`);
-    setParams(paramsL);
+    setParams({ [paramsKey]: paramsValue });
   }, [paramsKey, paramsValue, setParams]);
   return (
     <HeadersParams handleChange={handleChange} value={paramsValue}>

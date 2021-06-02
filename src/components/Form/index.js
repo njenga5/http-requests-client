@@ -33,9 +33,9 @@ const Form = () => {
   const handleChange = (e) => {
     const node = e.target;
     const nodeValue = node.value;
-    if (node.name === METHOD && nodeValue !== '') {
+    if (node.name === METHOD) {
       setMethod(nodeValue);
-    } else if (node.name === URL && nodeValue !== '') {
+    } else if (node.name === URL) {
       setUrl(nodeValue);
     }
   };

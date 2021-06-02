@@ -1,6 +1,6 @@
+import React, { useEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect } from "react";
 import { useGlobalContext } from "../../context";
 import HeadersParams from "./HeadersParams";
 import allHeaders from "./utils/AllHeaders";
@@ -18,8 +18,7 @@ const Headers = () => {
     }
   };
   useEffect(() => {
-    const headersL = JSON.parse(`{"${headersKey}":"${headersValue}"}`)
-    setHeaders(headersL);
+    setHeaders({ [headersKey]: headersValue });
   }, [headersKey, headersValue, setHeaders]);
   return (
     <HeadersParams handleChange={handleChange} value={headersValue}>

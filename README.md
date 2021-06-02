@@ -9,6 +9,7 @@ cd http-client
 npm install
 npm start
 ```
+![Image](/thumbnails/HttpClient.png)
 
 ### Known issues
 _Does not include all http methods_

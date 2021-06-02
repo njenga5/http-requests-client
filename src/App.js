@@ -1,5 +1,6 @@
 import { AppBar, Box, Grid, makeStyles, Typography } from "@material-ui/core";
 import Editor from "@monaco-editor/react";
+import { useEffect, useRef } from "react";
 import Form from "./components/Form";
 import LocalTabs from "./components/LocalTabs";
 import { useGlobalContext } from "./context";
@@ -29,27 +30,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const pretiffyResponse = (response) => {
-  if (response.message ){
-    return response.message
+  if (response.message) {
+    return JSON.stringify(response.message);
   }
-
-  return JSON.stringify(response)
-    .split("[")
-    .join("[\n\t")
-    .split("]")
-    .join("\n]")
-    .split("{")
-    .join("{\n\t")
-    .split("}")
-    .join("\n\t}")
-    .split(",")
-    .join(",\n\t");
+  return JSON.stringify(response.data);
 };
 
 function App() {
   const classes = useStyles();
   const { response } = useGlobalContext();
 
+  const editorRef = useRef(null);
+
+  const editorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+  };
+
+  useEffect(() => {
+    editorRef.current && editorRef.current.getAction("editor.action.formatDocument").run();
+  }, [response]);
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar} color="default">
@@ -69,7 +68,7 @@ function App() {
         <Grid item xs={12}>
           <Box className={classes.editor}>
             <Typography variant="body2">Response</Typography>
-            <Editor language="json" value={pretiffyResponse(response)} />
+            <Editor language="json" value={pretiffyResponse(response)} onMount={editorDidMount} />
           </Box>
         </Grid>
       </Grid>
