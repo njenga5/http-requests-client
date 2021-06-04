@@ -98,8 +98,7 @@ function App() {
         onClose={handleClose}
         autoHideDuration={6000}
         key="bottomright"
-        TransitionComponent={(props) => <Slide  {...props} direction="right" />}
-      >
+        TransitionComponent={(props) => <Slide {...props} direction="right" />}>
         <Alert severity="warning" onClose={handleClose}>
           Please enter a url
         </Alert>

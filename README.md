@@ -12,8 +12,10 @@ npm start
 ![](/thumbnails/HttpClient.png)
 
 ### Known issues
-* _Does not include all http methods_
-* _Does not have functionality for other content types except JSON_ 
+* _Does not include all http methods only major ones_
+* _Does not have functionality for other body types except JSON_ 
 
 ### Plans
-* _More options_
+* _Add support for more http methods_
+* _Add ability to cancel requests_
+
