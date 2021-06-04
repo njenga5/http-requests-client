@@ -8,9 +8,9 @@ const Params = () => {
   const handleChange = (e) => {
     const node = e.target;
     if (node.name === "key") {
-      node.value ? setParamsKey('key') : setParamsKey(node.value);
+      node.value ? setParamsKey(node.value) : setParamsKey("key");
     } else if (node.name === "value") {
-      node.value ? setParamsValue('value') : setParamsValue(node.value);
+      node.value ? setParamsValue(node.value) : setParamsValue("value");
     }
   };
   useEffect(() => {

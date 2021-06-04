@@ -1,4 +1,5 @@
-import { AppBar, Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import { AppBar, Box, Grid, makeStyles, Snackbar, Typography } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef } from "react";
 import Form from "./components/Form";
@@ -38,10 +39,16 @@ const pretiffyResponse = (response) => {
 
 function App() {
   const classes = useStyles();
-  const { response } = useGlobalContext();
+  const { response, openSnackbar, setOpenSnackbar, constructUrl } = useGlobalContext();
 
   const editorRef = useRef(null);
 
+  const handleClose = (ev, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
   const editorDidMount = (editor, monaco) => {
     editorRef.current = editor;
   };
@@ -50,29 +57,35 @@ function App() {
     editorRef.current && editorRef.current.getAction("editor.action.formatDocument").run();
   }, [response]);
   return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.appbar} color="default">
-        <Typography variant="h3" className={classes.header}>
-          Web Requests
-        </Typography>
-      </AppBar>
-      <Grid container direction="row" alignItems="center" justify="space-between">
-        <Grid item xs={12}>
-          <Form />
-        </Grid>
-        <Grid item container spacing={1} direction="row">
-          <Grid item md={12}>
-            <LocalTabs />
+    <>
+      <div className={classes.root}>
+        <AppBar position="static" className={classes.appbar} color="default">
+          <Typography variant="h3" className={classes.header}>
+            Web Requests
+          </Typography>
+        </AppBar>
+        <Grid container direction="row" alignItems="center" justify="space-between">
+          <Grid item xs={12}>
+            <Typography variant="h6">Url: {constructUrl}</Typography>
+            <Form />
+          </Grid>
+          <Grid item container spacing={1} direction="row">
+            <Grid item md={12}>
+              <LocalTabs />
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Box className={classes.editor}>
+              <Typography variant="body2">Response</Typography>
+              <Editor language="json" value={pretiffyResponse(response)} onMount={editorDidMount} />
+            </Box>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Box className={classes.editor}>
-            <Typography variant="body2">Response</Typography>
-            <Editor language="json" value={pretiffyResponse(response)} onMount={editorDidMount} />
-          </Box>
-        </Grid>
-      </Grid>
-    </div>
+      <Snackbar open={openSnackbar} onClose={handleClose} autoHideDuration={6000} key="right">
+        <Alert severity="warning" onClose={handleClose}>Please enter a url</Alert>
+      </Snackbar>
+      </div>
+    </>
   );
 }
 

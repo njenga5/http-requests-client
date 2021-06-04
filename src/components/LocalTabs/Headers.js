@@ -6,7 +6,7 @@ import HeadersParams from "./HeadersParams";
 import allHeaders from "./utils/AllHeaders";
 
 const Headers = () => {
-  const { setHeaders, headersKey, setHeadersKey, headersValue, setHeadersValue } =
+  const { setRequestHeaders, headersKey, setHeadersKey, headersValue, setHeadersValue } =
     useGlobalContext();
 
   const handleChange = (e, value) => {
@@ -18,7 +18,7 @@ const Headers = () => {
     }
   };
   useEffect(() => {
-    setHeaders({ [headersKey]: headersValue });
+    setRequestHeaders({ [headersKey]: headersValue });
   }, [headersKey, headersValue, setHeaders]);
   return (
     <HeadersParams handleChange={handleChange} value={headersValue}>
