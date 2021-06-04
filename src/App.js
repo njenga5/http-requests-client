@@ -1,4 +1,4 @@
-import { AppBar, Box, Grid, makeStyles, Snackbar, Typography } from "@material-ui/core";
+import { AppBar, Box, Grid, makeStyles, Slide, Snackbar, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef } from "react";
@@ -30,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const pretiffyResponse = (response) => {
+const pretiffyResponse = (response, resLang) => {
   if (response.message) {
     return JSON.stringify(response.message);
+  }
+  if (resLang !== "json") {
+    return response.data;
   }
   return JSON.stringify(response.data);
 };
@@ -40,7 +43,10 @@ const pretiffyResponse = (response) => {
 function App() {
   const classes = useStyles();
   const { response, openSnackbar, setOpenSnackbar, constructUrl } = useGlobalContext();
-
+  let responseLang = "json";
+  if (response.headers) {
+    responseLang = response.headers["content-type"].split(";")[0].split("/")[1];
+  }
   const editorRef = useRef(null);
 
   const handleClose = (ev, reason) => {
@@ -57,35 +63,48 @@ function App() {
     editorRef.current && editorRef.current.getAction("editor.action.formatDocument").run();
   }, [response]);
   return (
-    <>
-      <div className={classes.root}>
-        <AppBar position="static" className={classes.appbar} color="default">
-          <Typography variant="h3" className={classes.header}>
-            Web Requests
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.appbar} color="default">
+        <Typography variant="h3" className={classes.header}>
+          Web Requests
+        </Typography>
+      </AppBar>
+      <Grid container direction="row" alignItems="center" justify="space-between">
+        <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            {constructUrl}
           </Typography>
-        </AppBar>
-        <Grid container direction="row" alignItems="center" justify="space-between">
-          <Grid item xs={12}>
-            <Typography variant="h6">Url: {constructUrl}</Typography>
-            <Form />
-          </Grid>
-          <Grid item container spacing={1} direction="row">
-            <Grid item md={12}>
-              <LocalTabs />
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Box className={classes.editor}>
-              <Typography variant="body2">Response</Typography>
-              <Editor language="json" value={pretiffyResponse(response)} onMount={editorDidMount} />
-            </Box>
+          <Form />
+        </Grid>
+        <Grid item container spacing={1} direction="row">
+          <Grid item md={12}>
+            <LocalTabs />
           </Grid>
         </Grid>
-      <Snackbar open={openSnackbar} onClose={handleClose} autoHideDuration={6000} key="right">
-        <Alert severity="warning" onClose={handleClose}>Please enter a url</Alert>
+        <Grid item xs={12}>
+          <Box className={classes.editor}>
+            <Typography variant="body2">Response</Typography>
+            <Editor
+              language={responseLang}
+              value={pretiffyResponse(response, responseLang)}
+              onMount={editorDidMount}
+            />
+          </Box>
+        </Grid>
+      </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        onClose={handleClose}
+        autoHideDuration={6000}
+        key="bottomright"
+        TransitionComponent={(props) => <Slide  {...props} direction="right" />}
+      >
+        <Alert severity="warning" onClose={handleClose}>
+          Please enter a url
+        </Alert>
       </Snackbar>
-      </div>
-    </>
+    </div>
   );
 }
 

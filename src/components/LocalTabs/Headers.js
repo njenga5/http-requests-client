@@ -19,7 +19,7 @@ const Headers = () => {
   };
   useEffect(() => {
     setRequestHeaders({ [headersKey]: headersValue });
-  }, [headersKey, headersValue, setHeaders]);
+  }, [headersKey, headersValue, setRequestHeaders]);
   return (
     <HeadersParams handleChange={handleChange} value={headersValue}>
       <Autocomplete

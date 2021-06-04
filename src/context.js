@@ -7,7 +7,7 @@ const httpMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 const bodyLabels = ["none", "raw"];
 
 const AppProvider = ({ children }) => {
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState('');
   const [requestBody, setRequestBody] = useState(["{", "}"].join("\n\n"));
   const [params, setParams] = useState({});
   const [requestHeaders, setRequestHeaders] = useState({});
@@ -23,13 +23,11 @@ const AppProvider = ({ children }) => {
   const [constructUrl, setConstructUrl] = useState("");
   const [language, setLanguage] = useState("");
 
-
-  useEffect(()=>{
-    url  ? 
-    setConstructUrl(`${url}${paramsKey && '/?'}${paramsKey}${paramsKey && '='}${paramsValue}`)
-    :
-    setConstructUrl('')
-  }, [setConstructUrl, url, paramsKey, paramsValue])
+  useEffect(() => {
+    url
+      ? setConstructUrl(`${url}${paramsKey && "/?"}${paramsKey}${paramsKey && "="}${paramsValue}`)
+      : setConstructUrl("");
+  }, [setConstructUrl, url, paramsKey, paramsValue]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,9 +40,8 @@ const AppProvider = ({ children }) => {
           validateStatus: (status) => true,
           data: requestBody && JSON.parse(requestBody),
           params: params.key ? null : params,
-          headers:requestHeaders,
+          headers: requestHeaders,
         });
-        console.log(res.headers);
         setResponse(res);
       } catch (err) {
         setResponse(err);

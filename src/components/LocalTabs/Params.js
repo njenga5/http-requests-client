@@ -8,12 +8,13 @@ const Params = () => {
   const handleChange = (e) => {
     const node = e.target;
     if (node.name === "key") {
-      node.value ? setParamsKey(node.value) : setParamsKey("key");
+      setParamsKey(node.value);
     } else if (node.name === "value") {
-      node.value ? setParamsValue(node.value) : setParamsValue("value");
+      setParamsValue(node.value);
     }
   };
   useEffect(() => {
+    if (!paramsKey || !paramsValue) return;
     setParams({ [paramsKey]: paramsValue });
   }, [paramsKey, paramsValue, setParams]);
   return (
